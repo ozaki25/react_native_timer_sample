@@ -1,8 +1,8 @@
-import Timer from '../../../src/utils/Timer';
+import Timer from '../../../src/utils/DeepSleepTimer';
 
 jest.useFakeTimers();
 
-describe('Timer', () => {
+describe.skip('DeepSleepTimer', () => {
   describe('#constroctur', () => {
     test('onTimeout:タイマーが発火すると処理が一度呼ばれること', () => {
       const onTimeout = jest.fn();
@@ -135,6 +135,26 @@ describe('Timer', () => {
         jest.runAllTimers();
         expect(onRestart).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+  describe('#isTimeout', () => {
+    test('指定した時間が経過している場合', () => {
+      const onTimeout = jest.fn();
+      const delay = 10000;
+      const timer = new Timer(onTimeout, delay);
+
+      timer.startTime = Date.now() - delay - 1000;
+      const isTimeout = timer.isTimeout();
+      expect(isTimeout).toBeTruthy();
+    });
+    test('指定した時間が経過していない場合', () => {
+      const onTimeout = jest.fn();
+      const delay = 10000;
+      const timer = new Timer(onTimeout, delay);
+
+      timer.startTime = Date.now() - delay + 1000;
+      const isTimeout = timer.isTimeout();
+      expect(isTimeout).toBeFalsy();
     });
   });
 });
