@@ -5,5 +5,9 @@
     "react/prop-types": [2, { "ignore": ["navigation"] }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "max-len": [1, { "code": 100 }]
-  }
+  },
+  "env": {
+    "jest/globals": true
+  },
+  "plugins": ["jest"]
 }

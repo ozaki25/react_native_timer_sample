@@ -16,10 +16,10 @@ class Timer {
     onClear();
   }
 
-  reset(onReset = noop) {
-    this.clearTimer();
-    this.setTimer();
-    onReset();
+  restart(onRestart = noop) {
+    this.clear();
+    this.start();
+    onRestart();
   }
 }
 
