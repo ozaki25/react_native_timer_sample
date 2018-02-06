@@ -1,7 +1,7 @@
 import { AppState } from 'react-native';
 import Timer from './Timer';
 
-class DeepSleeptimer extends Timer {
+class DeepSleepTimer extends Timer {
   constructor(onTimeout, delay) {
     super(onTimeout, delay);
     this.appState = AppState.currentState;
@@ -14,7 +14,7 @@ class DeepSleeptimer extends Timer {
   }
 
   clear(onClear) {
-    super.clearTimeout(onClear);
+    super.clear(onClear);
   }
 
   restart(onRestart) {
@@ -45,4 +45,4 @@ class DeepSleeptimer extends Timer {
   isTimeout = () => Date.now() - this.startTime > this.delay;
 }
 
-export default DeepSleeptimer;
+export default DeepSleepTimer;

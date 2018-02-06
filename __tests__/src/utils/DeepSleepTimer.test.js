@@ -2,7 +2,7 @@ import Timer from '../../../src/utils/DeepSleepTimer';
 
 jest.useFakeTimers();
 
-describe.skip('DeepSleepTimer', () => {
+describe('DeepSleepTimer', () => {
   describe('#constroctur', () => {
     test('onTimeout:タイマーが発火すると処理が一度呼ばれること', () => {
       const onTimeout = jest.fn();
