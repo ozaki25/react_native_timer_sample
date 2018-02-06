@@ -15,7 +15,6 @@ const removeListener = () => {
 const isLandscape = route => landscapeOrientationScreens.includes(route);
 
 export const handleOrientation = (route) => {
-  alert();
   removeListener();
   if (isLandscape(route)) {
     lockToLandscapeLeft();
