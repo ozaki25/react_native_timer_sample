@@ -16,7 +16,6 @@ class A extends Component {
   componentWillMount() {
     this.timer.start(this.onStart);
     this.deepSleepTimer.start(this.onStart);
-    this.startTime = new Date().toLocaleTimeString();
   }
 
   onStart = () => this.setState({ startTime: new Date().toLocaleTimeString() });
@@ -25,9 +24,15 @@ class A extends Component {
 
   onForceTimeout = () => this.setState({ forceTimeout: new Date().toLocaleTimeString() });
 
+  onPress = () => {
+    this.timer.clear();
+    this.deepSleepTimer.clear();
+    this.props.navigation.navigate('B');
+  };
+
   render() {
     return (
-      <TouchableOpacity style={{ flex: 1 }} onPress={() => this.props.navigation.navigate('B')}>
+      <TouchableOpacity style={{ flex: 1 }} onPress={this.onPress}>
         <Text>Bへ</Text>
         <Text>StartTime: {this.state.startTime}</Text>
         <Text>Timeout: {this.state.timeout}</Text>
