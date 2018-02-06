@@ -157,4 +157,93 @@ describe('DeepSleepTimer', () => {
       expect(isTimeout).toBeFalsy();
     });
   });
+  describe('#isGoForeFromBack', () => {
+    describe('現在のappStateがactiveの場合', () => {
+      test('nextAppStateがactiveの場合falseを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'active';
+        const nextAppState = 'active';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeFalsy();
+      });
+      test('nextAppStateがinactiveの場合falseを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'active';
+        const nextAppState = 'inactive';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeFalsy();
+      });
+      test('nextAppStateがbackgroundの場合falseを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'active';
+        const nextAppState = 'background';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeFalsy();
+      });
+    });
+    describe('現在のappStateがinactiveの場合', () => {
+      test('nextAppStateがactiveの場合trueを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'inactive';
+        const nextAppState = 'active';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeTruthy();
+      });
+      test('nextAppStateがinactiveの場合falseを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'inactive';
+        const nextAppState = 'inactive';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeFalsy();
+      });
+      test('nextAppStateがbackgroundの場合falseを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'inactive';
+        const nextAppState = 'background';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeFalsy();
+      });
+    });
+    describe('現在のappStateがbackgroundの場合', () => {
+      test('nextAppStateがactiveの場合trueを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'background';
+        const nextAppState = 'active';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeTruthy();
+      });
+      test('nextAppStateがinactiveの場合falseを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'background';
+        const nextAppState = 'inactive';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeFalsy();
+      });
+      test('nextAppStateがbackgroundの場合falseを返すこと', () => {
+        const onTimeout = jest.fn();
+        const timer = new Timer(onTimeout);
+
+        timer.appState = 'background';
+        const nextAppState = 'background';
+        const isGoForeFromBack = timer.isGoForeFromBack(nextAppState);
+        expect(isGoForeFromBack).toBeFalsy();
+      });
+    });
+  });
 });
