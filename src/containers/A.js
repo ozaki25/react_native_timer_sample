@@ -10,14 +10,16 @@ class A extends Component {
     super(props);
     this.timer = new Timer(this.onTimeout, timeout);
     this.deepSleepTimer = new DeepSleepTimer(this.onForceTimeout, timeout);
-    this.state = { timeout: '', forceTimeout: '' };
+    this.state = { startTime: '', timeout: '', forceTimeout: '' };
   }
 
   componentWillMount() {
-    this.timer.start();
-    this.deepSleepTimer.start();
+    this.timer.start(this.onStart);
+    this.deepSleepTimer.start(this.onStart);
     this.startTime = new Date().toLocaleTimeString();
   }
+
+  onStart = () => this.setState({ startTime: new Date().toLocaleTimeString() });
 
   onTimeout = () => this.setState({ timeout: new Date().toLocaleTimeString() });
 
@@ -27,7 +29,7 @@ class A extends Component {
     return (
       <TouchableOpacity style={{ flex: 1 }} onPress={() => this.props.navigation.navigate('B')}>
         <Text>Bへ</Text>
-        <Text>StartTime: {this.startTime}</Text>
+        <Text>StartTime: {this.state.startTime}</Text>
         <Text>Timeout: {this.state.timeout}</Text>
         <Text>ForceTimeout: {this.state.forceTimeout}</Text>
       </TouchableOpacity>
