@@ -27,7 +27,11 @@ class DeepSleepTimer extends Timer {
   }
 
   onForeground() {
-    if (this.isTimeout()) this.fire();
+    if (this.isTimeout()) {
+      this.fire();
+    } else {
+      this.restart();
+    }
   }
 
   setStartTime() {

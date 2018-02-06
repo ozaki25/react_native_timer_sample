@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import Timer from '../utils/Timer';
 import DeepSleepTimer from '../utils/DeepSleepTimer';
 
-const timeout = 30000;
+const timeout = 20000;
 
 class A extends Component {
   constructor(props) {
