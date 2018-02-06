@@ -138,7 +138,7 @@ describe('DeepSleepTimer', () => {
     });
   });
   describe('#isTimeout', () => {
-    test('指定した時間が経過している場合', () => {
+    test('指定した時間が経過している場合tureを返すこと', () => {
       const onTimeout = jest.fn();
       const delay = 10000;
       const timer = new Timer(onTimeout, delay);
@@ -147,7 +147,7 @@ describe('DeepSleepTimer', () => {
       const isTimeout = timer.isTimeout();
       expect(isTimeout).toBeTruthy();
     });
-    test('指定した時間が経過していない場合', () => {
+    test('指定した時間が経過していない場合falseを返すこと', () => {
       const onTimeout = jest.fn();
       const delay = 10000;
       const timer = new Timer(onTimeout, delay);
