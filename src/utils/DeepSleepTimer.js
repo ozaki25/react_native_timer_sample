@@ -13,14 +13,6 @@ class DeepSleepTimer extends Timer {
     this.setStartTime();
   }
 
-  clear(onClear) {
-    super.clear(onClear);
-  }
-
-  restart(onRestart) {
-    super.restart(onRestart);
-  }
-
   fire() {
     super.clear();
     this.onTimeout();
