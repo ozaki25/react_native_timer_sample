@@ -30,7 +30,7 @@ class C extends Component {
   onTimeout = () =>
     this.props.navigation.dispatch(NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'A' })],
+      actions: [NavigationActions.navigate({ routeName: 'TimeoutPage' })],
     }));
 
   onPress = () => {
