@@ -137,6 +137,18 @@ describe('DeepSleepTimer', () => {
       });
     });
   });
+  describe('#fire', () => {
+    test('onTimeoutが一度実行されタイマーが止まっていること', () => {
+      const onTimeout = jest.fn();
+      const timer = new Timer(onTimeout);
+      timer.start();
+      timer.fire();
+
+      expect(onTimeout).toBeCalled();
+      jest.runAllTimers();
+      expect(onTimeout).toHaveBeenCalledTimes(1);
+    });
+  });
   describe('#isTimeout', () => {
     test('指定した時間が経過している場合tureを返すこと', () => {
       const onTimeout = jest.fn();
