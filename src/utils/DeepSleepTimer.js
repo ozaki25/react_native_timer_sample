@@ -18,16 +18,16 @@ class DeepSleepTimer extends Timer {
     this.onTimeout();
   }
 
+  setStartTime() {
+    this.startTime = Date.now();
+  }
+
   onForeground() {
     if (this.isTimeout()) {
       this.fire();
     } else {
       this.restart();
     }
-  }
-
-  setStartTime() {
-    this.startTime = Date.now();
   }
 
   handleAppStateChange = (nextAppState) => {

@@ -4,7 +4,7 @@ jest.useFakeTimers();
 
 describe('Timer', () => {
   describe('#constroctur', () => {
-    test('onTimeout:タイマーが発火すると処理が一度呼ばれること', () => {
+    test('タイマーが発火するとonTimeoutが一回呼ばれること', () => {
       const onTimeout = jest.fn();
       const timer = new Timer(onTimeout);
       timer.start();
@@ -14,7 +14,7 @@ describe('Timer', () => {
       expect(onTimeout).toBeCalled();
       expect(onTimeout).toHaveBeenCalledTimes(1);
     });
-    test('delay:指定時間経過後に処理が実行されること', () => {
+    test('delayで指定した時間経過後に処理が実行されること', () => {
       const delay = 1000;
       const onTimeout = jest.fn();
       const timer = new Timer(onTimeout, delay);
@@ -24,7 +24,7 @@ describe('Timer', () => {
   });
   describe('#start', () => {
     describe('引数がない場合', () => {
-      test('タイマーが起動し一度だけ発火すること', () => {
+      test('タイマーが起動しonTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const timer = new Timer(onTimeout);
         timer.start();
@@ -36,7 +36,7 @@ describe('Timer', () => {
       });
     });
     describe('引数がある場合', () => {
-      test('タイマーが起動し一度だけ発火すること', () => {
+      test('onTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const onStart = jest.fn();
         const timer = new Timer(onTimeout);
@@ -61,7 +61,7 @@ describe('Timer', () => {
   });
   describe('#clear', () => {
     describe('引数がない場合', () => {
-      test('タイマーが停止すること', () => {
+      test('onTimeoutが呼ばれないこと', () => {
         const onTimeout = jest.fn();
         const timer = new Timer(onTimeout);
         timer.start();
@@ -73,7 +73,7 @@ describe('Timer', () => {
       });
     });
     describe('引数がある場合', () => {
-      test('タイマーが停止すること', () => {
+      test('onTimeoutが呼ばれないこと', () => {
         const onTimeout = jest.fn();
         const onClear = jest.fn();
         const timer = new Timer(onTimeout);
@@ -99,7 +99,7 @@ describe('Timer', () => {
   });
   describe('#reset', () => {
     describe('引数がない場合', () => {
-      test('タイマーが再起動し一度だけ発火すること', () => {
+      test('onTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const timer = new Timer(onTimeout);
         timer.start();
@@ -112,7 +112,7 @@ describe('Timer', () => {
       });
     });
     describe('引数がある場合', () => {
-      test('タイマーが再起動し一度だけ発火すること', () => {
+      test('onTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const onRestart = jest.fn();
         const timer = new Timer(onTimeout);

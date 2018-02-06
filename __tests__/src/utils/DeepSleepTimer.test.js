@@ -4,7 +4,7 @@ jest.useFakeTimers();
 
 describe('DeepSleepTimer', () => {
   describe('#constroctur', () => {
-    test('onTimeout:タイマーが発火すると処理が一度呼ばれること', () => {
+    test('タイマーが発火するとonTimeoutが一回呼ばれること', () => {
       const onTimeout = jest.fn();
       const timer = new Timer(onTimeout);
       timer.start();
@@ -14,7 +14,7 @@ describe('DeepSleepTimer', () => {
       expect(onTimeout).toBeCalled();
       expect(onTimeout).toHaveBeenCalledTimes(1);
     });
-    test('delay:指定時間経過後に処理が実行されること', () => {
+    test('delayで指定した時間経過後に処理が実行されること', () => {
       const delay = 1000;
       const onTimeout = jest.fn();
       const timer = new Timer(onTimeout, delay);
@@ -24,7 +24,7 @@ describe('DeepSleepTimer', () => {
   });
   describe('#start', () => {
     describe('引数がない場合', () => {
-      test('タイマーが起動し一度だけ発火すること', () => {
+      test('タイマーが起動しonTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const timer = new Timer(onTimeout);
         timer.start();
@@ -36,7 +36,7 @@ describe('DeepSleepTimer', () => {
       });
     });
     describe('引数がある場合', () => {
-      test('タイマーが起動し一度だけ発火すること', () => {
+      test('onTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const onStart = jest.fn();
         const timer = new Timer(onTimeout);
@@ -61,7 +61,7 @@ describe('DeepSleepTimer', () => {
   });
   describe('#clear', () => {
     describe('引数がない場合', () => {
-      test('タイマーが停止すること', () => {
+      test('onTimeoutが呼ばれないこと', () => {
         const onTimeout = jest.fn();
         const timer = new Timer(onTimeout);
         timer.start();
@@ -73,7 +73,7 @@ describe('DeepSleepTimer', () => {
       });
     });
     describe('引数がある場合', () => {
-      test('タイマーが停止すること', () => {
+      test('onTimeoutが呼ばれないこと', () => {
         const onTimeout = jest.fn();
         const onClear = jest.fn();
         const timer = new Timer(onTimeout);
@@ -99,7 +99,7 @@ describe('DeepSleepTimer', () => {
   });
   describe('#reset', () => {
     describe('引数がない場合', () => {
-      test('タイマーが再起動し一度だけ発火すること', () => {
+      test('onTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const timer = new Timer(onTimeout);
         timer.start();
@@ -112,7 +112,7 @@ describe('DeepSleepTimer', () => {
       });
     });
     describe('引数がある場合', () => {
-      test('タイマーが再起動し一度だけ発火すること', () => {
+      test('onTimeoutが一回呼ばれること', () => {
         const onTimeout = jest.fn();
         const onRestart = jest.fn();
         const timer = new Timer(onTimeout);
@@ -138,7 +138,7 @@ describe('DeepSleepTimer', () => {
     });
   });
   describe('#fire', () => {
-    test('onTimeoutが一度実行されタイマーが止まっていること', () => {
+    test('onTimeoutが一回呼ばれタイマーが止まっていること', () => {
       const onTimeout = jest.fn();
       const timer = new Timer(onTimeout);
       timer.start();
@@ -149,13 +149,72 @@ describe('DeepSleepTimer', () => {
       expect(onTimeout).toHaveBeenCalledTimes(1);
     });
   });
+  describe('#onForeground', () => {
+    test('タイムアウトしている場合fireが一回呼ばれること', () => {
+      const timer = new Timer();
+      timer.fire = jest.fn();
+      timer.restart = jest.fn();
+      timer.isTimeout = jest.fn().mockReturnValue(true);
+      timer.onForeground();
+
+      expect(timer.restart).not.toBeCalled();
+      expect(timer.fire).toBeCalled();
+      expect(timer.fire).toHaveBeenCalledTimes(1);
+    });
+    test('タイムアウトしていない場合restartが一回呼ばれること', () => {
+      const timer = new Timer();
+      timer.fire = jest.fn();
+      timer.restart = jest.fn();
+      timer.isTimeout = jest.fn().mockReturnValue(false);
+      timer.onForeground();
+
+      expect(timer.fire).not.toBeCalled();
+      expect(timer.restart).toBeCalled();
+      expect(timer.restart).toHaveBeenCalledTimes(1);
+    });
+  });
+  describe('#handleAppStateChange', () => {
+    describe('バックグラウンドからフォアグラウンドへの復帰の場合', () => {
+      test('onForgroundが一回呼ばれること', () => {
+        const timer = new Timer();
+        const nextAppState = 'active';
+        timer.isGoForeFromBack = jest.fn().mockReturnValue(true);
+        timer.onForeground = jest.fn();
+        timer.handleAppStateChange(nextAppState);
+
+        expect(timer.onForeground).toBeCalled();
+        expect(timer.onForeground).toHaveBeenCalledTimes(1);
+      });
+      test('nextAppStateの値がappStateにセットされていること', () => {
+        const timer = new Timer();
+        const nextAppState = 'active';
+        timer.isGoForeFromBack = jest.fn().mockReturnValue(true);
+        timer.onForeground = jest.fn();
+        timer.handleAppStateChange(nextAppState);
+
+        expect(timer.appState).toBe(nextAppState);
+      });
+    });
+    describe('バックグラウンドからフォアグラウンドへの復帰ではない場合', () => {
+      test('nextAppStateの値がappStateにセットされていること', () => {
+        const timer = new Timer();
+        const nextAppState = 'inactive';
+        timer.isGoForeFromBack = jest.fn().mockReturnValue(false);
+        timer.onForeground = jest.fn();
+        timer.handleAppStateChange(nextAppState);
+
+        expect(timer.onForeground).not.toBeCalled();
+        expect(timer.appState).toBe(nextAppState);
+      });
+    });
+  });
   describe('#isTimeout', () => {
     test('指定した時間が経過している場合tureを返すこと', () => {
       const onTimeout = jest.fn();
       const delay = 10000;
       const timer = new Timer(onTimeout, delay);
 
-      timer.startTime = Date.now() - delay - 1000;
+      timer.startTime = Date.now() - delay - 1;
       const isTimeout = timer.isTimeout();
       expect(isTimeout).toBeTruthy();
     });
@@ -164,7 +223,7 @@ describe('DeepSleepTimer', () => {
       const delay = 10000;
       const timer = new Timer(onTimeout, delay);
 
-      timer.startTime = Date.now() - delay + 1000;
+      timer.startTime = Date.now() - delay + 1;
       const isTimeout = timer.isTimeout();
       expect(isTimeout).toBeFalsy();
     });
