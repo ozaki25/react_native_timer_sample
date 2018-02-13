@@ -3,14 +3,22 @@ import Timer from './Timer';
 
 class DeepSleepTimer extends Timer {
   constructor(onTimeout, delay) {
-    super(onTimeout, delay);
+    super(() => {
+      AppState.removeEventListener('change', this.handleAppStateChange);
+      onTimeout();
+    }, delay);
     this.appState = AppState.currentState;
-    AppState.addEventListener('change', this.handleAppStateChange);
   }
 
   start(onStart) {
+    AppState.addEventListener('change', this.handleAppStateChange);
     super.start(onStart);
     this.setStartTime();
+  }
+
+  clear(onClear) {
+    AppState.removeEventListener('change', this.handleAppStateChange);
+    super.clear(onClear);
   }
 
   fire() {

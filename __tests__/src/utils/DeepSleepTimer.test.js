@@ -19,7 +19,9 @@ describe('DeepSleepTimer', () => {
       const onTimeout = jest.fn();
       const timer = new Timer(onTimeout, delay);
       timer.start();
-      expect(setTimeout).toHaveBeenLastCalledWith(onTimeout, delay);
+      jest.advanceTimersByTime(delay);
+      expect(onTimeout).toBeCalled();
+      expect(onTimeout).toHaveBeenCalledTimes(1);
     });
   });
   describe('#start', () => {
