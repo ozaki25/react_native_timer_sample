@@ -21,6 +21,11 @@ describe('Timer', () => {
       timer.start();
       expect(setTimeout).toHaveBeenLastCalledWith(onTimeout, delay);
     });
+    test('引数がない場合でも起動すること', () => {
+      const timer = new Timer();
+      timer.start();
+      expect(setTimeout).toHaveBeenCalled();
+    });
   });
   describe('#start', () => {
     describe('引数がない場合', () => {
