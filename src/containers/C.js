@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Text, TouchableOpacity } from 'react-native';
+import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import DeepSleepTimer from '../utils/DeepSleepTimer';
 import Timer from '../utils/Timer';
@@ -42,9 +42,14 @@ class C extends Component {
 
   render() {
     return (
-      <TouchableOpacity style={{ flex: 1 }} onPress={this.onPress}>
-        <Text>Dへ</Text>
-      </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <TouchableOpacity style={{ flex: 1 }} onPress={this.onPress}>
+          <Text>Dへ</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ flex: 1 }} onPress={() => this.Timer.restart(this.onStart)}>
+          <Text>restart</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
